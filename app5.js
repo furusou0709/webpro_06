@@ -17,6 +17,17 @@ app.get("/keiyo", (req, res) => {
   res.render("db1", { data: station });
 });
 
+app.get("/keiyo_add", (req, res) => {
+  const newStation = {
+    id: Number(req.query.id),
+    code: req.query.code,
+    name: req.query.name,
+  };
+
+  station.push(newStation);
+  res.render("db1", { data: station });
+});
+
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
   const message2 = "Bon jour";

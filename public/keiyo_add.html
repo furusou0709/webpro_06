@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>駅を追加する</title>
+</head>
+<body>
+  <h2>駅を追加する</h2>
+  <form action="/keiyo_add" method="get">
+    <label for="id">ID</label>
+    <input type="number" id="id" name="id" required>
+
+    <label for="code">駅コード</label>
+    <input type="text" id="code" name="code" required>
+
+    <label for="name">駅名</label>
+    <input type="text" id="name" name="name" required>
+
+    <button type="submit">登録</button>
+  </form>
+</body>
+</html>
