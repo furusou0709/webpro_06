@@ -3,6 +3,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+app.use(express.urlencoded({ extended: true }));
 
 let station = [
   { id: 1, code: "JE01", name: "東京駅" },
@@ -42,10 +43,49 @@ app.get("/keiyo2", (req, res) => {
   res.render('keiyo2', {data: station2} );
 });
 
+app.get("/keiyo2/create", (req, res) => {
+  res.redirect("/public/keiyo2_new.html");
+});
+
 app.get("/keiyo2/:number", (req, res) => {
   const number = req.params.number;
-  const detail = station2[ number ];
-  res.render('keiyo2_detail', {data: detail} );
+  const detail = station2[number];
+  res.render("keiyo2_detail", { id: number, data: detail });
+});
+
+app.post("/keiyo2", (req, res) => {
+  const id = Math.max(0, ...station2.map(station => station.id)) + 1;
+
+  const newStation = {
+    id: id,
+    code: req.body.code,
+    name: req.body.name,
+    change: req.body.change,
+    passengers: Number(req.body.passengers),
+    distance: Number(req.body.distance)
+  };
+
+  station2.push(newStation);
+  res.redirect("/keiyo2");
+});
+
+app.get("/keiyo2/edit/:number", (req, res) => {
+  const number = req.params.number;
+  const detail = station2[number];
+
+  res.render("keiyo2_edit", { id: number, data: detail });
+});
+
+app.post("/keiyo2/update/:number", (req, res) => {
+  const number = req.params.number;
+
+  station2[number].code = req.body.code;
+  station2[number].name = req.body.name;
+  station2[number].change = req.body.change;
+  station2[number].passengers = Number(req.body.passengers);
+  station2[number].distance = Number(req.body.distance);
+
+  res.redirect("/keiyo2");
 });
 
 app.get("/hello1", (req, res) => {
